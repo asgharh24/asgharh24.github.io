@@ -1,0 +1,17 @@
+<html>
+<head>
+<script type="text/javascript" src="https://unpkg.com/circuit-sdk"></script>
+<title>Circuit Test App</title>
+</head>
+<body>
+<script>
+// No client_secret needed for Implicit Grant. SDK will obtain access token.
+const client = new Circuit.Client({
+  client_id: 'd4a16950306b41fbbec048c657e20c8c',
+  domain: 'circuitsandbox.net'
+});
+client.logon()
+  .then(user => console.log('Logged on as ' + user.displayName))
+</script>
+</body>
+</html>
