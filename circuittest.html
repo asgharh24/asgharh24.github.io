@@ -7,20 +7,63 @@
 
   <h1>GDD Circuit Test Application</h1>
   <button id="login" onclick="login()">Logon to Circuit</button>
-  <div id="Userid"></div>
+  <section id="output"></section>
 <script>
 // No client_secret needed for Implicit Grant. SDK will obtain access token.
 const client = new Circuit.Client({
   client_id: 'd4a16950306b41fbbec048c657e20c8c',
   domain: 'circuitsandbox.net'
 });
-let usid = document.getElementById('Userid');
+//let usid = document.getElementById('Userid');
 function login(){
 client.logon()
-  .then(user => usid.innerText=user.displayName)
-    
+  .then(user => output('Logged on as ${user.displayName}'))
+  .then(getMostRecentConversation)
+  .then(coversation => output('Most Recent Conversation:',conversations[0]))
+  .catch(error);
     //user => Userid('>>> Logged in as ${user.displayName}'))
 }
+var getMostRecentConversation = client.getConversations.bind(client, {direction: 'BEFORE', numberOfConversations: 1});
+
+// Helper methods for displaying results
+function error(e) {
+        console.log(e);
+        output(e.message);
+      }
+
+function output(msg, obj) {
+        var el = document.getElementById('output');
+        if (msg) {
+          el.appendChild(document.createElement('pre')).innerText = msg + '\n';
+        }
+        if (obj) {
+          if (typeof(obj) === 'object') {
+            obj = JSON.stringify(obj, undefined, 4);
+            obj = syntaxHighlight(obj);
+          }
+          el.appendChild(document.createElement('pre')).innerHTML = obj;
+        }
+      }
+
+      function syntaxHighlight(json) {
+        json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, match => {
+          var cls = 'number';
+          if (/^"/.test(match)) {
+            if (/:$/.test(match)) {
+              cls = 'key';
+            } else {
+              cls = 'string';
+            }
+          } else if (/true|false/.test(match)) {
+            cls = 'boolean';
+          } else if (/null/.test(match)) {
+            cls = 'null';
+          }
+          return '<span class="' + cls + '">' + match + '</span>';
+        });
+      }
+
 </script>
 </body>
 </html>
