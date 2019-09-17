@@ -4,14 +4,23 @@
 <title>Circuit Test App</title>
 </head>
 <body>
+
+  <h1>GDD Circuit Test Application</h1>
+  <button id="login" onclick="login()">Logon to Circuit</button>
+  <div id="Userid"></div>
 <script>
 // No client_secret needed for Implicit Grant. SDK will obtain access token.
 const client = new Circuit.Client({
   client_id: 'd4a16950306b41fbbec048c657e20c8c',
   domain: 'circuitsandbox.net'
 });
+let usid = document.getElementById('Userid');
+function login(){
 client.logon()
-  .then(user => console.log('Logged on as ' + user.displayName))
+  .then(user => Userid('>>> Logged in as ${user.displayName}'))
+  
+  //console.log('Logged on as ' + user.displayName))
+}
 </script>
 </body>
 </html>
