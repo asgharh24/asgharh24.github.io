@@ -17,9 +17,9 @@ const client = new Circuit.Client({
 //let usid = document.getElementById('Userid');
 function login(){
 client.logon()
-  .then(user => output('Logged on as ${user.displayName}'))
+  .then(user => output('Logged on as' + user.displayName))
   .then(getMostRecentConversation)
-  .then(coversation => output('Most Recent Conversation:',conversations[0]))
+  .then(conversations => output('Most Recent Conversation:',conversations[0]))
   .catch(error);
     //user => Userid('>>> Logged in as ${user.displayName}'))
 }
