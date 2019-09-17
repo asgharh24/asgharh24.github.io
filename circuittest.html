@@ -25,6 +25,11 @@ client.logon()
 }
 var getMostRecentConversation = client.getConversations.bind(client, {direction: 'BEFORE', numberOfConversations: 1});
 
+
+// This event requires a presence subscription via subscribePresence(userIDs)
+client.addEventListener('userPresenceChanged', presence => output('userPresenceChanged event received:', presence));
+
+
 // Helper methods for displaying results
 function error(e) {
         console.log(e);
